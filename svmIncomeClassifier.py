@@ -48,11 +48,7 @@ def dataPreprocess(dataSet):
     # re-encode
     le.fit(np.unique(workclass))
     workclass = le.transform(workclass)
-    enc = OneHotEncoder()
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    workclass = enc.transform(workclass).toarray()
+    
     
 
     
@@ -69,10 +65,7 @@ def dataPreprocess(dataSet):
     education = np.rint(education)
     le.fit(np.unique(education))
     education = le.transform(education)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    education = enc.transform(education).toarray()
+
 
     # marital-status
     le.fit(["Married-civ-spouse", "Divorced", "Never-married", "Separated", "Widowed", "Married-spouse-absent", "Married-AF-spouse","?"])
@@ -87,10 +80,7 @@ def dataPreprocess(dataSet):
     marital_status = np.rint(marital_status)
     le.fit(np.unique(marital_status))
     marital_status = le.transform(marital_status)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    marital_status = enc.transform(marital_status).toarray()
+
 
     # occupation
     le.fit(["Tech-support", "Craft-repair", "Other-service", "Sales", "Exec-managerial", "Prof-specialty", "Handlers-cleaners", "Machine-op-inspct", "Adm-clerical", "Farming-fishing", "Transport-moving", "Priv-house-serv", "Protective-serv", "Armed-Forces","?"])
@@ -105,10 +95,7 @@ def dataPreprocess(dataSet):
     occupation = np.rint(occupation)
     le.fit(np.unique(occupation))
     occupation = le.transform(occupation)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    occupation = enc.transform(occupation).toarray()
+
 
 
     # relationship
@@ -124,10 +111,7 @@ def dataPreprocess(dataSet):
     relationship = np.rint(relationship)
     le.fit(np.unique(relationship))
     relationship = le.transform(relationship)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    relationship = enc.transform(relationship).toarray()
+
 
     # race
     le.fit(["White", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other", "Black","?"])
@@ -142,10 +126,7 @@ def dataPreprocess(dataSet):
     race = np.rint(race)
     le.fit(np.unique(race))
     race = le.transform(race)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    race = enc.transform(race).toarray()
+
     
 
     # sex
@@ -161,10 +142,7 @@ def dataPreprocess(dataSet):
     sex = np.rint(sex)
     le.fit(np.unique(sex))
     sex = le.transform(sex)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    sex = enc.transform(sex).toarray()
+
 
     # native_country
     le.fit(["United-States", "Cambodia", "England", "Puerto-Rico", "Canada", "Germany", "Outlying-US(Guam-USVI-etc)", "India", "Japan", "Greece", "South", "China", "Cuba", "Iran", "Honduras", "Philippines", "Italy", "Poland", "Jamaica", "Vietnam", "Mexico", "Portugal", "Ireland", "France", "Dominican-Republic", "Laos", "Ecuador", "Taiwan", "Haiti", "Columbia", "Hungary", "Guatemala", "Nicaragua", "Scotland", "Thailand", "Yugoslavia", "El-Salvador", "Trinadad&Tobago", "Peru", "Hong", "Holand-Netherlands","?"])
@@ -179,10 +157,7 @@ def dataPreprocess(dataSet):
     native_country = np.rint(native_country)
     le.fit(np.unique(native_country))
     native_country = le.transform(native_country)
-    temp = np.array(range(len(le.classes_)))
-    temp = temp[:,None]
-    enc.fit(temp)
-    native_country = enc.transform(native_country).toarray()
+
     
 
     # Income output
@@ -209,16 +184,36 @@ def dataPreprocess(dataSet):
     age = age[:,None]
     age = min_max_scaler.fit_transform(age)
     
+    workclass = workclass.astype(float)
+    workclass = min_max_scaler.fit_transform(workclass)
+
     fnlwgt = trainSet[:,2]
     fnlwgt = fnlwgt.astype(float)
     fnlwgt = fnlwgt[:,None]
     fnlwgt = min_max_scaler.fit_transform(fnlwgt)
-    
+
+    education = education.astype(float)
+    education = min_max_scaler.fit_transform(education)
     
     education_num = trainSet[:,4]
     education_num = education_num.astype(float)
     education_num = education_num[:,None]
     education_num = min_max_scaler.fit_transform(education_num)
+
+    marital_status = marital_status.astype(float)
+    marital_status = min_max_scaler.fit_transform(marital_status)
+
+    occupation = occupation.astype(float)
+    occupation = min_max_scaler.fit_transform(occupation)
+
+    relationship = relationship.astype(float)
+    relationship = min_max_scaler.fit_transform(relationship)
+
+    race = race.astype(float)
+    race = min_max_scaler.fit_transform(race)
+
+    sex = sex.astype(float)
+    sex = min_max_scaler.fit_transform(sex)
 
     capital_gain = trainSet[:,10]
     capital_gain = capital_gain.astype(float)
@@ -234,6 +229,9 @@ def dataPreprocess(dataSet):
     hours_per_week = hours_per_week.astype(float)
     hours_per_week = hours_per_week[:,None]
     hours_per_week = min_max_scaler.fit_transform(hours_per_week)
+
+    native_country = native_country.astype(float)
+    native_country = min_max_scaler.fit_transform(native_country)
     
     trainingData = np.concatenate((age,workclass,fnlwgt,education,education_num,marital_status,occupation,relationship,race,sex,capital_gain,capital_loss,hours_per_week,native_country),axis=1)
     return trainingData, income
@@ -257,7 +255,6 @@ def processDataSet(train, test):
 
     accuracy = score(predictions, incomeTest)
     print accuracy
-    
     # change prediction from boolean to string
     lookup_table = np.array(['<=50K','>50K'])
     predictions = lookup_table[predictions]
@@ -268,11 +265,9 @@ Test the result, should be rights predictions of len(test dataset)
 '''
 def score(prediction, actualIncome):
     counter = 0
-    for i in prediction:
-        if (prediction[i] == actualIncome[i]):
+    for i in range(0, len(prediction)):
+        if (prediction[i] - actualIncome[i] == 0):
             counter = counter + 1
-    print counter
-    print len(actualIncome)
     accuracy = counter / float(len(actualIncome))
     return accuracy
 
