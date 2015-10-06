@@ -244,11 +244,13 @@ def processDataSet(train, test):
     trainSet, incomeTrain = dataPreprocess(train)
     testSet, incomeTest = dataPreprocess(test)
 
-    Penalty = 1
+    Penalty = 100
     Gamma = 0
+    # RBF
     # Linear
     # Polynomial
-    # RBF
+    Degree = 3
+    
     clf = SVC(C = Penalty, gamma = Gamma, kernel='rbf')
     clf.fit(trainSet, incomeTrain)
     predictions = clf.predict(testSet)

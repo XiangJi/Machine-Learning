@@ -28,7 +28,7 @@ def loadDataSet(txtfile):
     yVal = yVal[:,None]
     return xVal, yVal
 
-#X, Y = loadDataSet('RRdata.txt')
+
 
 '''
  function 1: ridge regression
@@ -38,7 +38,6 @@ def ridgeRegress(xVal, yVal, Lambda):
     betaLR = np.dot(np.dot(np.linalg.inv(temp), np.transpose(xVal)), yVal)
     return betaLR
 
-#betaLR = ridgeRegress(X, Y, 0.26)
 
 '''
 draw the learning plane and the data points
@@ -111,3 +110,12 @@ def standRegres(xVal, yVal):
     plt.title('x1 and x2 comparison')
     plt.show()
     return theta
+
+def main():
+    X, Y = loadDataSet('RRdata.txt')
+    betaLR = ridgeRegress(X, Y, 0)
+    print betaLR
+    print cv(X, Y)
+
+if __name__ == "__main__":
+    main()
