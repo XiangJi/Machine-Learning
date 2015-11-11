@@ -90,8 +90,9 @@ def pca_knn(train, test):
 
     PCA = RandomizedPCA(n_components = 256)
     #n_components = dim
-    reducedTrainX = PCA.fit_transform(trainX)
-    reducedTestX = PCA.fit_transform(testX)
+    PCA.fit(trainX)
+    reducedTrainX = PCA.transform(trainX)
+    reducedTestX = PCA.transform(testX)
     
     neigh = KNeighborsClassifier(n_neighbors = 1, weights = 'distance')
     neigh.fit(reducedTrainX, trainY)
@@ -109,8 +110,9 @@ def pca_svm(train, test):
 
     PCA = RandomizedPCA(n_components = 256)
     
-    reducedTrainX = PCA.fit_transform(trainX)
-    reducedTestX = PCA.fit_transform(testX)
+    PCA.fit(trainX)
+    reducedTrainX = PCA.transform(trainX)
+    reducedTestX = PCA.transform(testX)
 
     svmClassifier = SVC(kernel = 'poly')
     svmClassifier.fit(reducedTrainX, trainY)
