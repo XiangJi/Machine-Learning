@@ -46,7 +46,7 @@ def knn(train, test):
     trainY, trainX = loadData(train)
     testY, testX = loadData(test)
     
-    neigh = KNeighborsClassifier(n_neighbors = 1, weights = 'distance')
+    neigh = KNeighborsClassifier(n_neighbors = 4, weights = 'distance')
     neigh.fit(trainX, trainY)
     y = neigh.predict(testX)
     testError = 1 - neigh.score(testX, testY)
@@ -88,13 +88,13 @@ def pca_knn(train, test):
     trainY, trainX = loadData(train)
     testY, testX = loadData(test)
 
-    PCA = RandomizedPCA(n_components = 256)
+    PCA = RandomizedPCA(n_components = 64)
     #n_components = dim
     PCA.fit(trainX)
     reducedTrainX = PCA.transform(trainX)
     reducedTestX = PCA.transform(testX)
     
-    neigh = KNeighborsClassifier(n_neighbors = 1, weights = 'distance')
+    neigh = KNeighborsClassifier(n_neighbors = 4, weights = 'distance')
     neigh.fit(reducedTrainX, trainY)
 
     y = neigh.predict(reducedTestX)
@@ -108,7 +108,7 @@ def pca_svm(train, test):
     trainY, trainX = loadData(train)
     testY, testX = loadData(test)
 
-    PCA = RandomizedPCA(n_components = 256)
+    PCA = RandomizedPCA(n_components = 64)
     
     PCA.fit(trainX)
     reducedTrainX = PCA.transform(trainX)
